@@ -109,7 +109,7 @@ Au lieu d'utiliser Logstash, vous pouvez configurer Filebeat pour envoyer direct
    # Commenter la section Logstash
    # output.logstash:
    #   hosts: ["elk-logstash:5044"]
-   
+
    # Décommenter la section Elasticsearch
    output.elasticsearch:
      hosts: ["http://elasticsearch:9200"]
@@ -210,5 +210,3 @@ Ce projet est configuré pour un environnement de développement. Pour la produc
 ---
 
 **Note** : Ce projet utilise Docker Compose pour la simplicité. Pour un environnement Podman, remplacez `docker-compose` par `podman-compose` dans toutes les commandes.
-
-

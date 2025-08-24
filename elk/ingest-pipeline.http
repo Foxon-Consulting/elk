@@ -34,4 +34,3 @@ content-type: application/json
 
 GET http://127.0.0.1:9200/ HTTP/1.1
 content-type: application/json
-

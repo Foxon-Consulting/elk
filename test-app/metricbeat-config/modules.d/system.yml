@@ -9,4 +9,4 @@
     - filesystem
     - fsstat
   enabled: true
-  period: 10s 
+  period: 10s

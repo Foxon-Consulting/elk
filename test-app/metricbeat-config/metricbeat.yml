@@ -28,4 +28,4 @@ output.elasticsearch:
   password: "changeme"
   ssl.verification_mode: none
 
-logging.level: info 
+logging.level: info

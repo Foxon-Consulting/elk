@@ -94,4 +94,4 @@ curl http://localhost:9200/_cluster/health  # Elasticsearch
 ### Problèmes courants
 - **Logstash ne démarre pas** : Vérifier la syntaxe du pipeline
 - **Grok parsing échoue** : Vérifier le format des messages
-- **Connexion refusée** : Vérifier que les ports sont ouverts 
+- **Connexion refusée** : Vérifier que les ports sont ouverts

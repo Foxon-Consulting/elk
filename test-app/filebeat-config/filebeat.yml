@@ -31,4 +31,4 @@ output.logstash:
 #   ssl.verification_mode: none
 #   pipeline: "custom_timestamp_pipeline"
 
-logging.level: info 
+logging.level: info
