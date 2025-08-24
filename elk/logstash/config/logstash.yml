@@ -1,0 +1,17 @@
+---
+## Default Logstash configuration from Logstash base image.
+## https://github.com/elastic/logstash/blob/main/docker/data/logstash/config/logstash-full.yml
+#
+api.http.host: 0.0.0.0
+
+node.name: logstash
+
+## X-Pack désactivé pour le mode open source
+xpack.monitoring.enabled: false
+xpack.management.enabled: false
+
+## Configuration du pipeline
+pipeline.buffer.type: heap
+pipeline.workers: 4
+pipeline.batch.size: 125
+pipeline.batch.delay: 50

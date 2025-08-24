@@ -1,0 +1,37 @@
+### Create custom ingest pipeline
+
+PUT http://127.0.0.1:9200/_ingest/pipeline/custom_timestamp_pipeline HTTP/1.1
+content-type: application/json
+
+{
+    "description": "Pipeline pour logs d'application",
+    "processors": [
+        {
+        "grok": {
+            "field": "message",
+            "patterns": [
+            "%{TIMESTAMP_ISO8601:timestamp}: \\[%{LOGLEVEL:log_level}\\] %{GREEDYDATA:log_message}"
+            ]
+        }
+        },
+        {
+        "date": {
+            "field": "timestamp",
+            "target_field": "@timestamp",
+            "formats": ["yyyy-MM-dd HH:mm:ss"]
+        }
+        },
+        {
+        "set": {
+            "field": "environment",
+            "value": "development"
+        }
+        }
+    ]
+}
+
+### Check if Elasticsearch is running
+
+GET http://127.0.0.1:9200/ HTTP/1.1
+content-type: application/json
+

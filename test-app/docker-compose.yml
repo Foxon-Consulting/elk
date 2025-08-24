@@ -1,0 +1,58 @@
+services:
+  # Application de test avec génération de logs
+  test-app:
+    image: ubuntu:22.04
+    container_name: test-app
+    volumes:
+      - ./logs:/var/log/app
+    restart: unless-stopped
+    networks:
+      - elk
+    environment:
+      - TZ=Europe/Paris
+      - DEBIAN_FRONTEND=noninteractive
+    # Génère des logs de test en continu
+    command: >
+      bash -c "
+        apt-get update && apt-get install -y tzdata &&
+        ln -sf /usr/share/zoneinfo/Europe/Paris /etc/localtime &&
+        mkdir -p /var/log/app &&
+        while true; do
+          echo \"\$(date '+%Y-%m-%d %H:%M:%S'): [INFO] Application de test démarrée\" >> /var/log/app/app.log;
+          echo \"\$(date '+%Y-%m-%d %H:%M:%S'): [DEBUG] Génération de logs de test\" >> /var/log/app/app.log;
+          echo \"\$(date '+%Y-%m-%d %H:%M:%S'): [INFO] Test de performance en cours...\" >> /var/log/app/app.log;
+          echo \"\$(date '+%Y-%m-%d %H:%M:%S'): [WARN] Attention: log de test\" >> /var/log/app/app.log;
+          sleep 3;
+        done
+      "
+    user: root
+    privileged: true
+
+  # Filebeat en sidecar
+  filebeat-sidecar:
+    image: docker.elastic.co/beats/filebeat:8.11.0
+    container_name: filebeat-sidecar
+    volumes:
+      - ./filebeat-config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs:/var/log/app:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log/docker:/var/log/docker:ro
+    user: root
+    command: filebeat -e -strict.perms=false
+    depends_on:
+      - test-app
+    restart: unless-stopped
+    networks:
+      - elk
+    environment:
+      - ELASTIC_PASSWORD=changeme
+      - TZ=Europe/Paris
+
+networks:
+  elk:
+    external: true
+    name: elk_elk
+
+volumes:
+  logs:
+    driver: local

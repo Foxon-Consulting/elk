@@ -1,0 +1,34 @@
+filebeat.inputs:
+- type: log
+  id: test-app-logs
+  enabled: true
+  paths:
+    - /var/log/app/*.log
+  fields:
+    app: test-app
+    environment: development
+    component: application
+    log_type: app
+  fields_under_root: true
+
+# processors:
+# - add_host_metadata: ~
+# - add_fields:
+#     fields:
+#       type: application-logs
+#       version: "1.0"
+
+# Envoyer à Logstash au lieu d'Elasticsearch directement
+output.logstash:
+  hosts: ["elk-logstash:5044"]
+
+
+# Elasticsearch via ingest pipeline (You have to create the pipeline though, by using postman.http)
+# output.elasticsearch:
+#   hosts: ["http://elasticsearch:9200"]
+#   username: "elastic"
+#   password: "changeme"
+#   ssl.verification_mode: none
+#   pipeline: "custom_timestamp_pipeline"
+
+logging.level: info 
